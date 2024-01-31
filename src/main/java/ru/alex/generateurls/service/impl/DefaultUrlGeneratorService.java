@@ -10,18 +10,18 @@ import ru.alex.generateurls.service.UrlGeneratorService;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultUrlGeneratorService implements UrlGeneratorService {
-    
+
     private final UrlsRepository urlsRepository;
-    
+    private final String alphabetAndDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
     @Override
     public URLs generate(URL url) {
-
-
         URLs urLs = URLs.builder()
                 .id(UUID.randomUUID().toString())
                 .yourUrl(url.getUrl())
@@ -46,17 +46,11 @@ public class DefaultUrlGeneratorService implements UrlGeneratorService {
 
     private String encode(String input) {
         StringBuilder result = new StringBuilder();
-        int count = 1;
+        int size = input.length() / 2;
 
-        for (int i = 1; i < input.length(); i++) {
-            if (input.charAt(i) == input.charAt(i - 1))
-                count++;
-            else {
-                result.append(count).append(input.charAt(i - 1));
-                count = 1;
-            }
+        for (int i = 0; i < size; i++) {
+            result.append(alphabetAndDigits.charAt(new Random().nextInt(alphabetAndDigits.length() - 1)));
         }
-        result.append(count).append(input.charAt(input.length() - 1));
-        return result.toString();
+        return result.append(".temp").toString();
     }
 }
