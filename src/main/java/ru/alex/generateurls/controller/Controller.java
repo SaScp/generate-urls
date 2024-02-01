@@ -35,8 +35,4 @@ public class Controller {
         return new RedirectView(generatorService.get(url));
     }
 
-    @GetMapping("/all")
-    public List<URLs> findAll() {
-        return generatorService.findAll();
-    }
 }
