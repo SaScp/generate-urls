@@ -7,11 +7,9 @@ import ru.alex.generateurls.model.response.URLs;
 import ru.alex.generateurls.repository.UrlsRepository;
 import ru.alex.generateurls.service.UrlGeneratorService;
 
+import java.net.MalformedURLException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,16 +19,20 @@ public class DefaultUrlGeneratorService implements UrlGeneratorService {
     private final String alphabetAndDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     @Override
-    public URLs generate(URL url) {
-        URLs urLs = URLs.builder()
-                .id(UUID.randomUUID().toString())
-                .yourUrl(url.getUrl())
-                .newUrl(encode(url.getUrl().replace("/", "")))
-                .timestamp(Date.from(Instant.now()))
-                .build();
+    public URLs generate(URL url) throws MalformedURLException {
+        Optional<URLs> optionalURLs = urlsRepository.findByYourUrl(url.getUrl());
+        if (optionalURLs.isEmpty()) {
+            URLs urLs = URLs.builder()
+                    .id(UUID.randomUUID().toString())
+                    .yourUrl(url.getUrl())
+                    .newUrl(encode(url.getUrl().replace("/", "")))
+                    .timestamp(Date.from(Instant.now()))
+                    .build();
 
-        urlsRepository.save(urLs);
-        return urlsRepository.save(urLs);
+            return urlsRepository.save(urLs);
+        } else {
+            return optionalURLs.get();
+        }
     }
 
 
@@ -44,13 +46,13 @@ public class DefaultUrlGeneratorService implements UrlGeneratorService {
         return urlsRepository.findAll();
     }
 
-    private String encode(String input) {
+    private String encode(String input) throws MalformedURLException {
         StringBuilder result = new StringBuilder();
         int size = input.length() / 2;
 
         for (int i = 0; i < size; i++) {
             result.append(alphabetAndDigits.charAt(new Random().nextInt(alphabetAndDigits.length() - 1)));
         }
-        return result.append(".temp").toString();
+        return result.append(".domain").toString();
     }
 }
