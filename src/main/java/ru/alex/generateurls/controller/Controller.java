@@ -1,6 +1,7 @@
 package ru.alex.generateurls.controller;
 
 
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,7 +20,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/click")
+
 public class Controller {
 
     private final UrlGeneratorService generatorService;
