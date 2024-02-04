@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.alex.generateurls.model.request.URL;
+import ru.alex.generateurls.model.response.Info;
 import ru.alex.generateurls.model.response.URLs;
 import ru.alex.generateurls.service.UrlGeneratorService;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/")
 public class Controller {
 
     private final UrlGeneratorService generatorService;
@@ -31,8 +33,12 @@ public class Controller {
     }
 
     @GetMapping("/{url}")
-    public RedirectView redirect(@PathVariable String url) {
+    public RedirectView redirect(@PathVariable("url") String url) {
         return new RedirectView(generatorService.get(url));
+    }
+    @GetMapping("/")
+    public Info getInfoOfProject() {
+        return Info.getInstant();
     }
 
 }

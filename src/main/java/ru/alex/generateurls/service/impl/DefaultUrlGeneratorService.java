@@ -17,6 +17,7 @@ import java.util.*;
 public class DefaultUrlGeneratorService implements UrlGeneratorService {
 
     private final UrlsRepository urlsRepository;
+
     private final String alphabetAndDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     @Override
