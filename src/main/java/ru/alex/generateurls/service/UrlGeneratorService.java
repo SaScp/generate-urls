@@ -11,5 +11,4 @@ public interface UrlGeneratorService {
 
     String get(String url);
 
-    List<URLs> findAll();
 }

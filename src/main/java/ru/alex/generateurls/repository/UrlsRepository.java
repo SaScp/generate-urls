@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UrlsRepository extends MongoRepository<URLs, String> {
 
-    URLs findByNewUrl(String url);
+    Optional<URLs> findByNewUrl(String url);
     Optional<URLs> findByYourUrl(String url);
 }

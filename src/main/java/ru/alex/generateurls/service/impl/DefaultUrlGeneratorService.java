@@ -6,6 +6,7 @@ import ru.alex.generateurls.model.request.URL;
 import ru.alex.generateurls.model.response.URLs;
 import ru.alex.generateurls.repository.UrlsRepository;
 import ru.alex.generateurls.service.UrlGeneratorService;
+import ru.alex.generateurls.util.exception.ResourceNotFoundException;
 
 import java.net.MalformedURLException;
 import java.time.Instant;
@@ -40,17 +41,14 @@ public class DefaultUrlGeneratorService implements UrlGeneratorService {
 
     @Override
     public String get(String url) {
-        return urlsRepository.findByNewUrl(url).getYourUrl();
-    }
-
-    @Override
-    public List<URLs> findAll() {
-        return urlsRepository.findAll();
+        return urlsRepository.findByNewUrl(url)
+                .orElseThrow(ResourceNotFoundException::new)
+                .getYourUrl();
     }
 
     private String encode(String input) throws MalformedURLException {
         StringBuilder result = new StringBuilder();
-        int size = input.length() / 2;
+        int size = input.length() / 3;
 
         for (int i = 0; i < size; i++) {
             result.append(alphabetAndDigits.charAt(new Random().nextInt(alphabetAndDigits.length() - 1)));
