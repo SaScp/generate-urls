@@ -31,7 +31,9 @@ public class DefaultUrlGeneratorService implements UrlGeneratorService {
 
             return urlsRepository.save(urLs);
         } else {
-            return optionalURLs.get();
+            return optionalURLs.get()
+                    .builder()
+                    .timestamp(Date.from(Instant.now())).build();
         }
     }
 
